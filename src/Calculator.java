@@ -3,13 +3,29 @@ import java.util.*;
     A simple calculator evaluating basic expressions with only positive numbers.
  */
 public class Calculator {
-
+    public static void printStack(Stack<Double> operands, Stack<Character> operations)
+    {
+        ArrayList<Double> arr1 = new ArrayList<>();
+        ArrayList<Character> arr2 = new ArrayList<>();
+        while(!operands.empty())
+        {
+            Double d = operands.pop();
+            arr1.add(d);
+            System.out.println(d);
+        }
+        while(!operations.empty())
+        {
+            Character c = operations.pop();
+            arr2.add(c);
+            System.out.println(c);
+        }
+    }
     /*
         Returns if char is a valid operator character
      */
     public static boolean isOperation(char c)
     {
-        return c == '+' || c == '-' || c == '*' || c == '/';
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^' ;
     }
     /*
         Checks if expression is valid and doesn't end with an operation
@@ -23,35 +39,35 @@ public class Calculator {
         for(int i = 0; i < expression.length(); i++)
         {
             char c = expression.charAt(i);
+
             // check that the operator is surrounded by digits, and to make sure the next char after an operator is another operator
             if(isOperation(c))
             {
+                char next = expression.charAt(i+1);
+                char prev = expression.charAt(i-1);
                 operatorCount+=1;
                 // operator at start,end or repeats return false
-                if(i == 0 || i == expression.length()-1 || !(Character.isDigit(expression.charAt(i-1)) && Character.isDigit(expression.charAt(i+1))) )
+                if(i == 0 || i == expression.length()-1 || !((Character.isDigit(prev)||prev=='.') && (Character.isDigit(next) || next=='.')) )
                 {
                     return false;
                 }
             }
             // if anything in the expression is not an operator or a number, its false
-            else if(!Character.isDigit(c))
+            else if(!Character.isDigit(c) || c != '.')
             {
                 return false;
             }
         }
-        if(operatorCount == 0)
-        {
-            return false;
-        }
-        return true;
+        return operatorCount == 0 ? false:true;
+
     }
 
     /*
         Returns operands in the expression
      */
-    public static ArrayList<Integer> getOperands(String expression)
+    public static ArrayList<Double> getOperands(String expression)
     {
-        ArrayList<Integer> operandArray = new ArrayList<Integer>();
+        ArrayList<Double> operandArray = new ArrayList<>();
         int firstDigitIndex = 0;
         int lastDigitIndex = 0;
         while(lastDigitIndex<expression.length())
@@ -60,8 +76,8 @@ public class Calculator {
             if(isOperation(expression.charAt(lastDigitIndex)))
             {
                 String numberString = expression.substring(firstDigitIndex,lastDigitIndex);
-                int number = Integer.parseInt(numberString);
-                Integer operand = new Integer(number);
+                double number = Double.parseDouble(numberString);
+                Double operand = number;
                 operandArray.add(operand);
                 firstDigitIndex = lastDigitIndex+1;
             }
@@ -69,8 +85,8 @@ public class Calculator {
             if(lastDigitIndex+1==expression.length())
             {
                 String numberString = expression.substring(firstDigitIndex,expression.length());
-                int number = Integer.parseInt(numberString);
-                Integer operand = new Integer(number);
+                double number = Double.parseDouble(numberString);
+                Double operand = number;
                 operandArray.add(operand);
                 firstDigitIndex = lastDigitIndex;
 
@@ -91,13 +107,13 @@ public class Calculator {
      */
     public static ArrayList<Character> getOperations(String expression)
     {
-        ArrayList<Character> operationArray = new ArrayList<Character>();
+        ArrayList<Character> operationArray = new ArrayList<>();
 
         for(int index =0;index<expression.length();index++)
         {
             if(isOperation(expression.charAt(index)))
             {
-                Character operation = new Character(expression.charAt(index));
+                Character operation = expression.charAt(index);
                 operationArray.add(operation);
             }
 
@@ -107,10 +123,12 @@ public class Calculator {
     /*
         Do basic math
      */
-    public static int evaluateExpression(int operand1, int operand2,char operation)
+    public static double evaluateExpression(Double operand1, Double operand2,char operation)
     {
         switch(operation)
         {
+            case '^':
+                return Math.pow(operand1,operand2);
             case '+':
                 return operand1+operand2;
             case '-':
@@ -120,16 +138,16 @@ public class Calculator {
             case '/':
                 if(operand2==0)
                 {
-                    return -1;
+                    return -1.0;
                 }
                 return operand1/operand2;
             default:
-                return 0; // figure out what to make the bad value would be
+                return 0.0; // figure out what to make the bad value would be
         }
 
     }
 
-    public static int addToStack(ArrayList<Integer> operands, ArrayList<Character> operations,Stack<Integer> operandStack,Stack<Character> operationStack,
+    public static int addToStack(ArrayList<Double> operands, ArrayList<Character> operations,Stack<Double> operandStack,Stack<Character> operationStack,
                                   int operandCounter, int operationCounter)
     {
         if(operationStack.isEmpty() && operandStack.size()<=1)
@@ -160,12 +178,59 @@ public class Calculator {
         return 0;
     }
 
-    public static int solveExpression(String expression)
+    /*
+        Returns the position of last exp in arraylist, returns -1 if doesnt exist
+     */
+    public static int isThereChainExponential(int operationCounter,ArrayList<Character> operations)
+    {
+        int pos = operationCounter;
+        while(pos<operations.size())
+        {
+            if(operations.get(pos).charValue()!='^')
+            {
+                return pos;
+            }
+            pos++;
+        }
+        return -1;
+    }
+
+    /*
+        Returns an array of double of size 2 which are
+        1) Total of chain
+        2) The new operandCounter value
+     */
+    public static double calculateChainExponential(int operandCounter, int lastExpIndex, ArrayList<Double> operands)
+    {
+
+        int backwardsOperandPointer = lastExpIndex;
+        double base = operands.get(backwardsOperandPointer-1);
+        double exp = operands.get(backwardsOperandPointer);
+        double total = Math.pow(base,exp);
+        System.out.println("outside loop base:"+base+" exp:" + exp + " total:" +total);
+        backwardsOperandPointer-=2;
+        operandCounter++;
+        while(operandCounter<=lastExpIndex)
+        {
+            exp = total;
+            base = operands.get(backwardsOperandPointer);
+            total = Math.pow(base,exp);
+            backwardsOperandPointer--;
+            operandCounter++;
+            System.out.println("base:"+base+" exp:" + exp + " total:" +total);
+        }
+        return total;
+    }
+
+    /*
+        Calculates expression with order of operations in order of ^/*+-
+     */
+    public static double solveExpression(String expression)
     {
         //delete blank spaces in the expression
         expression = expression.replace(" ", "");
 
-        ArrayList<Integer> operands = getOperands(expression);
+        ArrayList<Double> operands = getOperands(expression);
         ArrayList<Character> operations = getOperations(expression);
 
        /* for(int i=0;i<operands.size();i++)
@@ -178,12 +243,12 @@ public class Calculator {
         }
         */
 
-        int total = 0;
+        double total = 0.0;
         int operandCounter = 0;
         int operationCounter = 0;
 
-        Stack<Integer> operandStack = new Stack<Integer>();
-        Stack<Character> operationStack = new Stack<Character>();
+        Stack<Double> operandStack = new Stack<>();
+        Stack<Character> operationStack = new Stack<>();
 
 
         //System.out.println("hi");
@@ -215,35 +280,83 @@ public class Calculator {
                 //System.out.println("hi hi hi");
                 if(operationCounter==operations.size())
                 {
-                    int operand2 = operandStack.pop().intValue();
-                    int operand1 = operandStack.pop().intValue();
+                    double operand2 = operandStack.pop().doubleValue();
+                    double operand1 = operandStack.pop().doubleValue();
                     char operation = operationStack.pop().charValue();
-                    //System.out.println("first: " + operand1 + " second: "+operand2 + " operation: "+operation);
+                    System.out.println("first: " + operand1 + " second: "+operand2 + " operation: "+operation);
                     total = evaluateExpression(operand1,operand2,operation);
                     //System.out.println("total: " + total);
                     break;
                 }
-                //System.out.println("hi hi hi hi");
+
+                //pop next two operations to see which has priority and 3rd operand in case second operation is higher priority
                 char operation1 = operationStack.pop().charValue();
                 char operation2 = operations.get(operationCounter).charValue();
-                int operand3 = operands.get(operandCounter).intValue();
+                double operand3 = operands.get(operandCounter).doubleValue();
 
-                //System.out.println("first: " + operation1 + " second: "+operation2 + " operand: "+operand3);
-
-                //if first operation is multiplication/division, do that first and add the next one in
-                if(operation1=='*' || operation1=='/')
+                System.out.println("first: " + operation1 + " second: "+operation2 + " operand: "+operand3);
+                // if both operations are exponential then math.pow operand 2 and 3
+                if((operation1=='^' || operation2=='^') && isThereChainExponential(operationCounter,operations)>=operationCounter)
                 {
+                    double operand2 = operandStack.pop().doubleValue();
+                    double operand1 = operandStack.pop().doubleValue();
+                    int lastExpIndex = isThereChainExponential(operationCounter,operations);
+                    if(operation1=='^' )
+                    {
+                        if (operation2!='^')
+                        {
+                            System.out.println(" first is ^ and second is not ^");
+                            operandStack.push(Math.pow(operand1,operand2));
+                            operandStack.push(operand3);
+                            operationStack.push(operation2);
+                        }
+                        else
+                        {
+                            System.out.println("first and more is ^");
+                            System.out.println(calculateChainExponential(operandCounter,lastExpIndex,operands));
+                            operandStack.push(calculateChainExponential(operandCounter,lastExpIndex,operands));
+
+                            operandCounter +=  lastExpIndex-operationCounter-1;
+                            operationCounter += lastExpIndex-operationCounter-1;
+                        }
 
 
-                    int operand2 = operandStack.pop().intValue();
-                    int operand1 = operandStack.pop().intValue();
+                    }
+                    // this means operation 1 is not part of the exp chain
+                    else if(operation2=='^')
+                    {
+                        //put back first operand and operation since they are of lower priority
+                        operationStack.push(operation1);
+                        operandStack.push(operand1);
+                        if(lastExpIndex > operandCounter)
+                        {
+                            System.out.println("second and more ^");
+                            System.out.println(calculateChainExponential(operandCounter,lastExpIndex,operands));
+                            operandStack.push(calculateChainExponential(operandCounter,lastExpIndex,operands));
 
+                            operandCounter +=  lastExpIndex-operationCounter-1;
+                            operationCounter += lastExpIndex-operationCounter-1;
+                        }
+                        else
+                        {
+                            System.out.println("only second ^");
+                            operandStack.push(Math.pow(operand2,operand3));
+                        }
+                    }
 
+                }
+                //if first operation is multiplication/division/exp, do that first and add the next one in
+                else if(operation1=='*' || operation1=='/')
+                {
+                    double operand2 = operandStack.pop().doubleValue();
+                    double operand1 = operandStack.pop().doubleValue();
+                    System.out.println("first: " + operand1 + " second: "+operand2 + " operation: "+operation1);
                     //remember to add operand3 and operation 1 back in
                     operationStack.push(operation1);
                     operandStack.push(operand3);
 
-                    operandStack.push(new Integer(evaluateExpression(operand1,operand2,operation1)));
+                    System.out.println(evaluateExpression(operand1,operand2,operation1));
+                    operandStack.push(evaluateExpression(operand1,operand2,operation1));
                     operandStack.push(operands.get(operandCounter));
                     operationStack.push(operations.get(operationCounter));
 
@@ -255,15 +368,18 @@ public class Calculator {
                     {
                         //put back first operation and then evaluate operands 2 and 3
                         operationStack.push(operation1);
-                        int operand2 = operandStack.pop().intValue();
-                        operandStack.push(new Integer(evaluateExpression(operand2,operand3,operation2)));
+                        double operand2 = operandStack.pop().doubleValue();
+                        operandStack.push(evaluateExpression(operand2,operand3,operation2));
+                        System.out.println(evaluateExpression(operand2,operand3,operation2));
                     }
                     else
                     {
                         //if second operation is addition or subtraction, pop first two operands and evaluate and then push back operand3 and operation2
-                        int operand2 = operandStack.pop().intValue();
-                        int operand1 = operandStack.pop().intValue();
-                        operandStack.push(new Integer(evaluateExpression(operand1,operand2,operation1)));
+                        double operand2 = operandStack.pop().doubleValue();
+                        double operand1 = operandStack.pop().doubleValue();
+                        System.out.println("first: " + operand1 + " second: "+operand2 + " operation: "+operation1);
+                        System.out.println(evaluateExpression(operand1,operand2,operation1));
+                        operandStack.push(evaluateExpression(operand1,operand2,operation1));
                         operandStack.push(operand3);
                         operationStack.push(operation2);
                     }
@@ -271,7 +387,7 @@ public class Calculator {
 
                 operandCounter++;
                 operationCounter++;
-
+                System.out.println(operandCounter +" " + operationCounter);
             }
         }
         return total;
@@ -295,7 +411,7 @@ public class Calculator {
                 boolean isValid = isValidExpression(input);
                 if(isValid)
                 {
-                    int result = solveExpression(input);
+                    double result = solveExpression(input);
                     System.out.println("The answer is: "+ result);
 
                 }
