@@ -3,23 +3,6 @@ import java.util.*;
     A simple calculator evaluating basic expressions with only positive numbers.
  */
 public class Calculator {
-    public static void printStack(Stack<Double> operands, Stack<Character> operations)
-    {
-        ArrayList<Double> arr1 = new ArrayList<>();
-        ArrayList<Character> arr2 = new ArrayList<>();
-        while(!operands.empty())
-        {
-            Double d = operands.pop();
-            arr1.add(d);
-            System.out.println(d);
-        }
-        while(!operations.empty())
-        {
-            Character c = operations.pop();
-            arr2.add(c);
-            System.out.println(c);
-        }
-    }
     /*
         Returns if char is a valid operator character
      */
@@ -43,11 +26,15 @@ public class Calculator {
             // check that the operator is surrounded by digits, and to make sure the next char after an operator is another operator
             if(isOperation(c))
             {
+                if(i==0 || i==expression.length()-1)
+                {
+                    return false;
+                }
                 char next = expression.charAt(i+1);
                 char prev = expression.charAt(i-1);
                 operatorCount+=1;
                 // operator at start,end or repeats return false
-                if(i == 0 || i == expression.length()-1 || !((Character.isDigit(prev)||prev=='.') && (Character.isDigit(next) || next=='.')) )
+                if(!((Character.isDigit(prev)||prev=='.') && (Character.isDigit(next) || next=='.')) )
                 {
                     return false;
                 }
@@ -58,7 +45,7 @@ public class Calculator {
                 return false;
             }
         }
-        return operatorCount == 0 ? false:true;
+        return operatorCount != 0 ? true:false;
 
     }
 
@@ -207,7 +194,7 @@ public class Calculator {
         double base = operands.get(backwardsOperandPointer-1);
         double exp = operands.get(backwardsOperandPointer);
         double total = Math.pow(base,exp);
-        System.out.println("outside loop base:"+base+" exp:" + exp + " total:" +total);
+        //System.out.println("outside loop base:"+base+" exp:" + exp + " total:" +total);
         backwardsOperandPointer-=2;
         operandCounter++;
         while(operandCounter<=lastExpIndex)
@@ -217,7 +204,7 @@ public class Calculator {
             total = Math.pow(base,exp);
             backwardsOperandPointer--;
             operandCounter++;
-            System.out.println("base:"+base+" exp:" + exp + " total:" +total);
+            //System.out.println("base:"+base+" exp:" + exp + " total:" +total);
         }
         return total;
     }
@@ -283,7 +270,7 @@ public class Calculator {
                     double operand2 = operandStack.pop().doubleValue();
                     double operand1 = operandStack.pop().doubleValue();
                     char operation = operationStack.pop().charValue();
-                    System.out.println("first: " + operand1 + " second: "+operand2 + " operation: "+operation);
+                    //System.out.println("first: " + operand1 + " second: "+operand2 + " operation: "+operation);
                     total = evaluateExpression(operand1,operand2,operation);
                     //System.out.println("total: " + total);
                     break;
@@ -294,7 +281,7 @@ public class Calculator {
                 char operation2 = operations.get(operationCounter).charValue();
                 double operand3 = operands.get(operandCounter).doubleValue();
 
-                System.out.println("first: " + operation1 + " second: "+operation2 + " operand: "+operand3);
+                //System.out.println("first: " + operation1 + " second: "+operation2 + " operand: "+operand3);
                 // if both operations are exponential then math.pow operand 2 and 3
                 if((operation1=='^' || operation2=='^') && isThereChainExponential(operationCounter,operations)>=operationCounter)
                 {
@@ -305,15 +292,15 @@ public class Calculator {
                     {
                         if (operation2!='^')
                         {
-                            System.out.println(" first is ^ and second is not ^");
+                            //System.out.println(" first is ^ and second is not ^");
                             operandStack.push(Math.pow(operand1,operand2));
                             operandStack.push(operand3);
                             operationStack.push(operation2);
                         }
                         else
                         {
-                            System.out.println("first and more is ^");
-                            System.out.println(calculateChainExponential(operandCounter,lastExpIndex,operands));
+                            //System.out.println("first and more is ^");
+                            //System.out.println(calculateChainExponential(operandCounter,lastExpIndex,operands));
                             operandStack.push(calculateChainExponential(operandCounter,lastExpIndex,operands));
 
                             operandCounter +=  lastExpIndex-operationCounter-1;
@@ -330,8 +317,8 @@ public class Calculator {
                         operandStack.push(operand1);
                         if(lastExpIndex > operandCounter)
                         {
-                            System.out.println("second and more ^");
-                            System.out.println(calculateChainExponential(operandCounter,lastExpIndex,operands));
+                            //System.out.println("second and more ^");
+                            //System.out.println(calculateChainExponential(operandCounter,lastExpIndex,operands));
                             operandStack.push(calculateChainExponential(operandCounter,lastExpIndex,operands));
 
                             operandCounter +=  lastExpIndex-operationCounter-1;
@@ -339,7 +326,7 @@ public class Calculator {
                         }
                         else
                         {
-                            System.out.println("only second ^");
+                            //System.out.println("only second ^");
                             operandStack.push(Math.pow(operand2,operand3));
                         }
                     }
@@ -350,12 +337,12 @@ public class Calculator {
                 {
                     double operand2 = operandStack.pop().doubleValue();
                     double operand1 = operandStack.pop().doubleValue();
-                    System.out.println("first: " + operand1 + " second: "+operand2 + " operation: "+operation1);
+                    //System.out.println("first: " + operand1 + " second: "+operand2 + " operation: "+operation1);
                     //remember to add operand3 and operation 1 back in
                     operationStack.push(operation1);
                     operandStack.push(operand3);
 
-                    System.out.println(evaluateExpression(operand1,operand2,operation1));
+                    //System.out.println(evaluateExpression(operand1,operand2,operation1));
                     operandStack.push(evaluateExpression(operand1,operand2,operation1));
                     operandStack.push(operands.get(operandCounter));
                     operationStack.push(operations.get(operationCounter));
@@ -370,15 +357,15 @@ public class Calculator {
                         operationStack.push(operation1);
                         double operand2 = operandStack.pop().doubleValue();
                         operandStack.push(evaluateExpression(operand2,operand3,operation2));
-                        System.out.println(evaluateExpression(operand2,operand3,operation2));
+                        //System.out.println(evaluateExpression(operand2,operand3,operation2));
                     }
                     else
                     {
                         //if second operation is addition or subtraction, pop first two operands and evaluate and then push back operand3 and operation2
                         double operand2 = operandStack.pop().doubleValue();
                         double operand1 = operandStack.pop().doubleValue();
-                        System.out.println("first: " + operand1 + " second: "+operand2 + " operation: "+operation1);
-                        System.out.println(evaluateExpression(operand1,operand2,operation1));
+                        //System.out.println("first: " + operand1 + " second: "+operand2 + " operation: "+operation1);
+                        //System.out.println(evaluateExpression(operand1,operand2,operation1));
                         operandStack.push(evaluateExpression(operand1,operand2,operation1));
                         operandStack.push(operand3);
                         operationStack.push(operation2);
@@ -387,7 +374,7 @@ public class Calculator {
 
                 operandCounter++;
                 operationCounter++;
-                System.out.println(operandCounter +" " + operationCounter);
+                //System.out.println(operandCounter +" " + operationCounter);
             }
         }
         return total;
