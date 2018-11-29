@@ -10,7 +10,7 @@ public class CalculatorMethodTesting
     /////////////////////////////////////////////////////////////////
     /////////////////////////// Function: CheckValid Expression Tests
     @Test
-    private void checkValidSimpleAdditionExpressionTest1()
+    public void checkValidSimpleAdditionExpressionTest1()
     {
         Calculator calc = new Calculator();
         String sample = "3+5";
@@ -18,7 +18,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkValidSimpleSubtractionExpressionTest2()
+    public void checkValidSimpleSubtractionExpressionTest2()
     {
         Calculator calc = new Calculator();
         String sample = "10-5";
@@ -26,7 +26,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkValidSimpleMultiplicationExpressionTest3()
+    public void checkValidSimpleMultiplicationExpressionTest3()
     {
         Calculator calc = new Calculator();
         String sample = "3*5";
@@ -34,7 +34,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkValidSimpleDivisionExpressionTest4()
+    public void checkValidSimpleDivisionExpressionTest4()
     {
         Calculator calc = new Calculator();
         String sample = "24/3";
@@ -42,7 +42,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkValidExpressionSpacesIncludedTest5()
+    public void checkValidExpressionSpacesIncludedTest5()
     {
         Calculator calc = new Calculator();
         String sample = "  25 +   35 - 22 +3 *        6      ";
@@ -50,7 +50,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkValidExpressionExponentTest6()
+    public void checkValidExpressionExponentTest6()
     {
         Calculator calc = new Calculator();
         String sample = "5^5^2";
@@ -61,7 +61,7 @@ public class CalculatorMethodTesting
     /////////////////////////
     //check must fail options
     @Test
-    private void checkValidDExpressionDoubleOperatorFailTest1()
+    public void checkValidDExpressionDoubleOperatorFailTest1()
     {
         Calculator calc = new Calculator();
         String sample = "3--5";
@@ -69,7 +69,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkValidDExpressionOnlyDigitsFailTest2()
+    public void checkValidDExpressionOnlyDigitsFailTest2()
     {
         Calculator calc = new Calculator();
         String sample = "12345678";
@@ -77,7 +77,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkValidDExpressionLettersIncludedFailTest3()
+    public void checkValidDExpressionLettersIncludedFailTest3()
     {
         Calculator calc = new Calculator();
         String sample = "12*3/4a-5^";
@@ -85,7 +85,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkValidDExpressionLettersOnlyFailTest4()
+    public void checkValidDExpressionLettersOnlyFailTest4()
     {
         Calculator calc = new Calculator();
         String sample = "calculator";
@@ -93,7 +93,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkValidDExpressionNonAlphanumericFailTest5()
+    public void checkValidDExpressionNonAlphanumericFailTest5()
     {
         Calculator calc = new Calculator();
         String sample = "1?23;+431-2";
@@ -101,7 +101,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkValidDExpressionOperatorAtEndFailTest6()
+    public void checkValidDExpressionOperatorAtEndFailTest6()
     {
         Calculator calc = new Calculator();
         String sample = "1/3+4*5-";
@@ -109,7 +109,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkValidDExpressionOperatorAtStartFailTest7()
+    public void checkValidDExpressionOperatorAtStartFailTest7()
     {
         Calculator calc = new Calculator();
         String sample = "+1/3+4*5";
@@ -125,7 +125,7 @@ public class CalculatorMethodTesting
     ////////////////////////////////////////////////////////
     /////////////////////////// Function: CheckOperand Tests
     @Test
-    private void checkNumberOfOperandsInSimpleExpressionTest1()
+    public void checkNumberOfOperandsInSimpleExpressionTest1()
     {
         Calculator calc = new Calculator();
         String sample = "3+5+7+9+0";
@@ -134,7 +134,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkNumberOfOperandsInEmptyExpressionTest2()
+    public void checkNumberOfOperandsInEmptyExpressionTest2()
     {
         Calculator calc = new Calculator();
         String sample = "";
@@ -143,7 +143,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkNumberOfOperandsWithMultipleExpressionTest3()
+    public void checkNumberOfOperandsWithMultipleExpressionTest3()
     {
         Calculator calc = new Calculator();
         String sample = "3/5+7+9+0-3*5";
@@ -152,7 +152,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkOperandsWithMultipleExpressionTest4()
+    public void checkOperandsWithMultipleExpressionTest4()
     {
         Calculator calc = new Calculator();
         String sample = "3/5+7+9+0-3*5";
@@ -174,7 +174,7 @@ public class CalculatorMethodTesting
     ////////////////////////////////////////////////////////
     ///////////////////// Function: CheckOperations
     @Test
-    private void checkNumberOfOperationsInSimpleExpressionTest1()
+    public void checkNumberOfOperationsInSimpleExpressionTest1()
     {
         Calculator calc = new Calculator();
         String sample = "3+5+7+9+0";
@@ -183,7 +183,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkNumberOfOperationsInEmptyExpressionTest2()
+    public void checkNumberOfOperationsInEmptyExpressionTest2()
     {
         Calculator calc = new Calculator();
         String sample = "";
@@ -192,7 +192,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkNumberOfOperationsWithMultipleExpressionTest3()
+    public void checkNumberOfOperationsWithMultipleExpressionTest3()
     {
         Calculator calc = new Calculator();
         String sample = "3/5+7+9+0-3*5";
@@ -201,7 +201,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void checkOperationsWithMultipleExpressionTest4()
+    public void checkOperationsWithMultipleExpressionTest4()
     {
         Calculator calc = new Calculator();
         String sample = "3/5+7+9+0-3*5";
@@ -223,7 +223,7 @@ public class CalculatorMethodTesting
     /////////////////////////// Function: Evaluation Tests
 
     @Test
-    private void evaluateExpressionAdditionTest1()
+    public void evaluateExpressionAdditionTest1()
     {
         Calculator calc = new Calculator();
         double operand1 = 1.0;
@@ -233,7 +233,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void evaluateExpressionAdditionTest2()
+    public void evaluateExpressionAdditionTest2()
     {
         Calculator calc = new Calculator();
         double operand1 = 136.0;
@@ -247,7 +247,7 @@ public class CalculatorMethodTesting
     /////////////////////////////////////////////
     //subtraction
     @Test
-    private void evaluateExpressionSubtractionTest1()
+    public void evaluateExpressionSubtractionTest1()
     {
         Calculator calc = new Calculator();
         double operand1 = 1.0;
@@ -257,7 +257,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void evaluateExpressionSubtractionTest2()
+    public void evaluateExpressionSubtractionTest2()
     {
         Calculator calc = new Calculator();
         double operand1 = 188.0;
@@ -270,7 +270,7 @@ public class CalculatorMethodTesting
     /////////////////////////////////////////////
     //Multiplication
     @Test
-    private void evaluateExpressionMultiplicationTest1()
+    public void evaluateExpressionMultiplicationTest1()
     {
         Calculator calc = new Calculator();
         double operand1 = 1.0;
@@ -280,7 +280,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void evaluateExpressionMultiplicationTest2()
+    public void evaluateExpressionMultiplicationTest2()
     {
         Calculator calc = new Calculator();
         double operand1 = 10.0;
@@ -293,7 +293,7 @@ public class CalculatorMethodTesting
     /////////////////////////////////////////////
     //////////////////////////////////Division
     @Test
-    private void evaluateExpressionDivisionTest1()
+    public void evaluateExpressionDivisionTest1()
     {
         Calculator calc = new Calculator();
         double operand1 = 1.0;
@@ -303,7 +303,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void evaluateExpressionDivisionTest2()
+    public void evaluateExpressionDivisionTest2()
     {
         Calculator calc = new Calculator();
         double operand1 = 399.0;
@@ -313,7 +313,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void evaluateExpressionDivisionTest3()
+    public void evaluateExpressionDivisionTest3()
     {
         Calculator calc = new Calculator();
         double operand1 = 13;
@@ -326,7 +326,7 @@ public class CalculatorMethodTesting
     /////////////////////////////////////////////
     ///////////////////////Function: add to stack
     @Test
-    private void addToEmptyStackTest1()
+    public void addToEmptyStackTest1()
     {
         Calculator calc = new Calculator();
         ArrayList<Double> operands = new ArrayList<>();
@@ -343,7 +343,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void addNonEmptyStackTest1()
+    public void addNonEmptyStackTest1()
     {
         Calculator calc = new Calculator();
         ArrayList<Double> operands = new ArrayList<>();
@@ -367,7 +367,7 @@ public class CalculatorMethodTesting
     /////////////////////////////////////////////
     ///////////////////////Function: Solve
     @Test
-    private void solveSimpleExpressionAdditionTest1()
+    public void solveSimpleExpressionAdditionTest1()
     {
         Calculator calc = new Calculator();
         double result = calc.solveExpression("3+3");
@@ -375,7 +375,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void solveSimpleExpressionAdditionTest2()
+    public void solveSimpleExpressionAdditionTest2()
     {
         Calculator calc = new Calculator();
         double result = calc.solveExpression("531+23153+54235+64875");
@@ -383,7 +383,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void solveSimpleExpressionSubtractionTest1()
+    public void solveSimpleExpressionSubtractionTest1()
     {
         Calculator calc = new Calculator();
         double result = calc.solveExpression("12-8");
@@ -391,7 +391,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void solveSimpleExpressionMultiplicationTest1()
+    public void solveSimpleExpressionMultiplicationTest1()
     {
         Calculator calc = new Calculator();
         double result = calc.solveExpression("82*7");
@@ -399,7 +399,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void solveSimpleExpressionDivisionTest1()
+    public void solveSimpleExpressionDivisionTest1()
     {
         Calculator calc = new Calculator();
         double result = calc.solveExpression("33/11");
@@ -407,7 +407,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void solveLongExpressionTest1()
+    public void solveLongExpressionTest1()
     {
         Calculator calc = new Calculator();
         double result = calc.solveExpression("5*5-3*2+4+28/7+23");
@@ -415,7 +415,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void solveLongExpressionTest2()
+    public void solveLongExpressionTest2()
     {
         Calculator calc = new Calculator();
         double result = calc.solveExpression("17+6/3*5-8-3*5");
@@ -423,7 +423,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void solveLongExpressionTest3()
+    public void solveLongExpressionTest3()
     {
         Calculator calc = new Calculator();
         double result = calc.solveExpression("13*5-26+58+8-31+26/2+5*8");
@@ -431,7 +431,7 @@ public class CalculatorMethodTesting
     }
 
     @Test
-    private void solveLongExpressionTest4()
+    public void solveLongExpressionTest4()
     {
         Calculator calc = new Calculator();
         double result = calc.solveExpression("159/3+4*33/6");

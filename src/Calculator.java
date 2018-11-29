@@ -40,7 +40,7 @@ public class Calculator {
                 }
             }
             // if anything in the expression is not an operator or a number, its false
-            else if(!Character.isDigit(c) || c != '.')
+            else if(!(Character.isDigit(c) || c != '.'))
             {
                 return false;
             }
